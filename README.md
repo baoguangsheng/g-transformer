@@ -8,6 +8,11 @@
 
 **Framework**: Our model and experiments are built upon [fairseq](https://github.com/pytorch/fairseq).
 
+Before running the scripts, please install fairseq dependencies by:
+```
+    pip install --editable .
+```
+
 ## Non-pretraining Settings
 
 ### G-Transformer random initialized
