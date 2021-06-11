@@ -4,7 +4,7 @@
 
 **Python Version**: Python3.6
 
-**Package Requirements**: torch==1.4.0 tensorboardX
+**Package Requirements**: torch==1.4.0 tensorboardX numpy==1.19.0
 
 **Framework**: Our model and experiments are built upon [fairseq](https://github.com/pytorch/fairseq).
 
