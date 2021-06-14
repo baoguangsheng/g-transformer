@@ -46,7 +46,7 @@ Before running the scripts, please install fairseq dependencies by:
 
 * Evaluate model:
 ```
-    bash exp_gtrans/run-all.sh run-randinit test exp_finetune
+    bash exp_gtrans/run-all.sh run-finetune test exp_finetune
 ```
 
 ## Pretraining Settings
