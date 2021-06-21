@@ -12,6 +12,7 @@ Before running the scripts, please install fairseq dependencies by:
 ```
     pip install --editable .
 ```
+Please also follow the readmes under folder raw_data and mbart.cc25 to download raw data and pretrained model.
 
 ## Non-pretraining Settings
 
@@ -50,6 +51,7 @@ Before running the scripts, please install fairseq dependencies by:
 ```
 
 ## Pretraining Settings
+### G-Transformer fine-tuned on mBART25
 * Prepare data: 
 ```
     mkdir exp_mbart
