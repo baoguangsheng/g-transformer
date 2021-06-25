@@ -29,7 +29,7 @@ if [ $mode == "data" ]; then
 elif [ $mode == "train" ]; then
   echo Training model...
   python train.py  $bin_path --save-dir $cp_path --tensorboard-logdir $cp_path --seed 444 --fp16 --num-workers 4 \
-         --task translation --arch transformer_doc_base --source-lang $slang --target-lang $tlang  \
+         --task translation --arch transformer_base --source-lang $slang --target-lang $tlang  \
          --share-all-embeddings  --optimizer adam --adam-betas "(0.9, 0.98)" --lr 5e-4 --lr-scheduler inverse_sqrt \
          --warmup-updates 4000 --criterion label_smoothed_cross_entropy --label-smoothing 0.1 --no-epoch-checkpoints \
          --max-tokens 4096 --update-freq 1 --validate-interval 1 --patience 10 > $exp_path/train.$data.$slang-$tlang.log 2>&1
