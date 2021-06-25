@@ -1,4 +1,4 @@
-# Transformer on sent baseline
+### Transformer on sent baseline
 
 Transformer baselines should be run with official fairseq. 
 
@@ -6,7 +6,7 @@ Transformer baselines should be run with official fairseq.
 
 Please copy the scripts to fairseq root folder.
 
-Appending model setting into fairseq/models/transformer.py
+Appending the model setting to fairseq/models/transformer.py
 ```
 @register_model_architecture("transformer", "transformer_base")
 def transformer_doc_base(args):
@@ -25,7 +25,7 @@ def transformer_doc_base(args):
 
 * Prepare data: 
 
-Follow the readmes under folder raw_data to prepare the raw data first, then
+Follow the readmes under folder raw_data to prepare the raw data first, then run the preprocessing
 
 ```
 mkdir exp_sent
