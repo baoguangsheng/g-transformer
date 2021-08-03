@@ -4,7 +4,7 @@ Transformer baselines should be run with official fairseq.
 
 * Prepare code:
 
-Please copy the scripts to fairseq root folder.
+Please copy the scripts to fairseq ([v0.9.0](https://github.com/pytorch/fairseq/releases/tag/v0.9.0)) root folder.
 
 Appending the model setting to fairseq/models/transformer.py
 ```
