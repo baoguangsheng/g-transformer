@@ -1,10 +1,8 @@
-Transformer baselines should be run with official fairseq. 
+## Transformer baselines
 
-* Prepare code:
+Transformer baselines should be run with official fairseq. We use the version between 0.9.0 and 1.10.0, which can be got from [snapshot]( https://drive.google.com/file/d/1UJmZn9LXPvOoifVKblt0RhUFsZRusOrt/view?usp=sharing ).
 
-Please copy the scripts to fairseq ([v0.9.0](https://drive.google.com/file/d/1UJmZn9LXPvOoifVKblt0RhUFsZRusOrt/view?usp=sharing) root folder.
-
-Appending the model setting to fairseq/models/transformer.py
+Please copy the scripts to fairseq root folder and append the model setting to fairseq/models/transformer.py before running the scripts.
 ```
 @register_model_architecture("transformer", "transformer_base")
 def transformer_doc_base(args):
