@@ -1,10 +1,8 @@
-### Transformer on sent baseline
-
 Transformer baselines should be run with official fairseq. 
 
 * Prepare code:
 
-Please copy the scripts to fairseq ([v0.9.0](https://github.com/pytorch/fairseq/releases/tag/v0.9.0)) root folder.
+Please copy the scripts to fairseq ([v0.9.0](https://drive.google.com/file/d/1UJmZn9LXPvOoifVKblt0RhUFsZRusOrt/view?usp=sharing) root folder.
 
 Appending the model setting to fairseq/models/transformer.py
 ```
@@ -22,6 +20,8 @@ def transformer_doc_base(args):
 	base_architecture(args)
 
 ```
+
+### Transformer on sent baseline
 
 * Prepare data: 
 
@@ -51,3 +51,31 @@ bash run-sent.sh test exp_sent europarl7
 ```
 
 
+### Transformer on doc baseline
+
+* Prepare data: 
+
+Follow the readmes under folder raw_data to prepare the raw data first, then run the preprocessing
+
+```
+mkdir exp_doc
+bash run-doc.sh data exp_doc iwslt17
+bash run-doc.sh data exp_doc nc2016
+bash run-doc.sh data exp_doc europarl7
+```
+
+* Train model:
+
+```
+CUDA_VISIBLE_DEVICES=0,1,2,3 bash run-doc.sh train exp_doc iwslt17
+CUDA_VISIBLE_DEVICES=0,1,2,3 bash run-doc.sh train exp_doc nc2016
+CUDA_VISIBLE_DEVICES=0,1,2,3 bash run-doc.sh train exp_doc europarl7
+```
+
+* Evaluate model:
+
+```
+bash run-doc.sh test exp_doc iwslt17
+bash run-doc.sh test exp_doc nc2016
+bash run-doc.sh test exp_doc europarl7
+```

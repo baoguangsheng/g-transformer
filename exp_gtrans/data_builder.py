@@ -82,6 +82,10 @@ def convert_to_segment(args):
             src_data.extend(srcs)
             tgt_data.extend(tgts)
             processed.append(idx)
+        # remove special token
+        if args.no_special_tok:
+            src_data = [line.replace('<s> ', '').replace(' </s>', '') for line in src_data]
+            tgt_data = [line.replace('<s> ', '').replace(' </s>', '') for line in tgt_data]
         # save segmented language files
         logger.info('Processed %s documents of %s with a max_len of %s.' % (len(processed), corpus, args.max_tokens))
         source_lang_file = '%s.%s' % (corpus, args.source_lang)
@@ -110,6 +114,7 @@ if __name__ == '__main__':
     parser.add_argument("--max-sents", default=1, type=int)
     parser.add_argument("--max-tokens", default=512, type=int)
     parser.add_argument("--min-train-doclen", default=-1, type=int)
+    parser.add_argument('--no-special-tok', action='store_true', default=False)
     args = parser.parse_args()
 
     logging.basicConfig(level=logging.INFO, filename='./data_builder.log', format="[%(asctime)s %(levelname)s] %(message)s")
