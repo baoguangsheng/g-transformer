@@ -29,3 +29,4 @@ bash exp_gtrans/prepare-bpe.sh raw_data/$data $tok_path
 # data builder
 python -m exp_gtrans.data_builder --datadir $tok_path --destdir $seg_path/ --source-lang $slang --target-lang $tlang --max-tokens 512 --max-sents 1000 --no-special-tok
 
+# note: in this script we reuse prepare-bpe.sh and data_builder.py from exp_gtrans, so just copy the folder to fairseq to enable prepare-doc.sh to run.
