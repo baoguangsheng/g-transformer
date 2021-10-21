@@ -1,6 +1,6 @@
 # G-Transformer
 
-**This code is for ACL 2021 paper [G-Transformer for Document-level Machine Translation](https://arxiv.org/abs/2105.14761).**
+**This code is for ACL 2021 paper [G-Transformer for Document-level Machine Translation](https://aclanthology.org/2021.acl-long.267/).**
 
 **Python Version**: Python3.6
 
