@@ -425,6 +425,8 @@ class TransformerEncoder(FairseqEncoder):
 
         encoder_states = [] if return_all_hiddens else None
 
+        # Guangsheng Bao: the partial mode enables the Group Attention (code name: local_attn)
+        # Here we generate attention mask for Group Attention according to group tags
         local_attn_mask = None
         if self.partial_mode:
             local_attn_mask = src_tags.unsqueeze(1) != src_tags.unsqueeze(2)
@@ -802,7 +804,8 @@ class TransformerDecoder(FairseqIncrementalDecoder):
         if self.cross_self_attention or prev_output_tokens.eq(self.padding_idx).any():
             padding_mask = prev_output_tokens.eq(self.padding_idx)
 
-        # for partial mode, generate local and global mask according group tags
+        # Guangsheng Bao: the partial mode enables the Group Attention (code name: local_attn)
+        # Here we generate attention mask for Group Attention and Global Attention according to group tags
         encoder_local_mask = None
         local_attn_mask = None
         global_attn_mask = None

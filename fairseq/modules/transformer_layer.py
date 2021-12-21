@@ -39,9 +39,8 @@ class TransformerEncoderLayer(nn.Module):
         self.quant_noise_block_size = getattr(args, "quant_noise_pq_block_size", 8)
         self.need_attn_entropy = getattr(args, 'doc_attn_entropy', False)
 
-        # full mode or partial mode
-        # for full mode, local is all the input tokens
-        # for partial mode, local is the current sentence, while global is all the input tokens
+        # Guangsheng Bao:
+        # XXX_attn_local is for local sentence (Group Attention), while XXX_attn_global is for global (Global Attention)
         self.self_attn_local = self.build_self_attention(self.embed_dim, args)
         if add_global_attn:
             self.self_attn_global = self.build_self_attention(self.embed_dim, args)
@@ -226,9 +225,8 @@ class TransformerDecoderLayer(nn.Module):
 
         self.cross_self_attention = getattr(args, "cross_self_attention", False)
 
-        # full mode or partial mode
-        # for full mode, local is all the input tokens
-        # for partial mode, local is the current sentence, while global is all the input tokens
+        # Guangsheng Bao:
+        # XXX_attn_local is for local sentence (Group Attention), while XXX_attn_global is for global (Global Attention)
         assert no_encoder_attn == False
         self.self_attn_local = self.build_self_attention(self.embed_dim, args, add_bias_kv=add_bias_kv, add_zero_attn=add_zero_attn)
         self.encoder_attn_local = self.build_encoder_attention(self.embed_dim, args.decoder_attention_heads, args)
