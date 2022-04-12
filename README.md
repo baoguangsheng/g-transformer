@@ -13,7 +13,7 @@ Before running the scripts, please install fairseq dependencies by:
     pip install --editable .
 ```
 Please also follow the readmes under folder raw_data and mbart.cc25 to download raw data and pretrained model.
-(Notes: Our models were trained on 4 GPUs. If you run them on 2 GPUs, in theory you could double the number for argument --update-freq. However, we haven't test such settings.)
+(Notes: Our models were trained on 4 GPUs. If you trained them on 2 GPUs, in theory you could double the number for argument --update-freq. However, we haven't tested such settings.)
 
 ## Non-pretraining Settings
 
