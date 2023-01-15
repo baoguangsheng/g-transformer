@@ -34,7 +34,7 @@ elif [ $input == "sent" ]; then
 fi
 
 # Preprocess/binarize the data
-dict_path=../shared/mbart.cc25/dict.txt
+dict_path=mbart.cc25/dict.txt
 python -m fairseq_cli.preprocess --task translation_doc --source-lang $slang --target-lang $tlang \
        --trainpref $seg_path/train --validpref $seg_path/valid --testpref $seg_path/test --destdir $bin_path \
        --srcdict $dict_path --tgtdict $dict_path --workers 8
