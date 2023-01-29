@@ -110,7 +110,6 @@ def main(args, override_args=None):
             progress.log(log_output, step=i)
             log_outputs.append(log_output)
             # save score of the sample
-            assert len(sample['id']) == 1
             src_tokens = utils.strip_pad(sample['net_input']['src_tokens'][0], tgt_dict.pad())
             target_tokens = utils.strip_pad(sample['target'][0], tgt_dict.pad()).int().cpu()
             src_str = src_dict.string(src_tokens, args.remove_bpe)

@@ -304,7 +304,7 @@ class SequenceGenerator(nn.Module):
         # update the frame-template according to current token
         def _update_frame(toks, step):
             toklen = toks.size(1)
-            exp_idx = toks[:,  -1:]
+            exp_idx = toks[:,  -1:].clone()
             exp_token = toks.gather(1, exp_idx).squeeze(-1)
             exp_doctok = (exp_token < 0).long()
             exp_docfrm = exp_token * (1 - exp_doctok) + self.pad * exp_doctok  # here we use '1' to mean NOT expecting a docframe token

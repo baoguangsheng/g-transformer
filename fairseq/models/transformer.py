@@ -37,7 +37,7 @@ DEFAULT_MAX_SOURCE_POSITIONS = 1024
 DEFAULT_MAX_TARGET_POSITIONS = 1024
 
 # Guangsheng Bao: generate group-tags according token sequence
-def tokens2tags(dict, tokens, eod):
+def tokens2tags_depricate(dict, tokens, eod):
     def _toks2tags(tokens):
         tags = []
         next_tag = 1
@@ -51,6 +51,12 @@ def tokens2tags(dict, tokens, eod):
         return tags
     tok_tags = [_toks2tags(tokens) for tokens in tokens.data.cpu().numpy().tolist()]
     tok_tags = torch.tensor(tok_tags, dtype=tokens.dtype, device=tokens.device)
+    return tok_tags
+
+def tokens2tags(dict, tokens, eod):
+    mask_tag = ~((tokens == dict.pad_index) | (tokens == dict.index(eod)))
+    start_tag = (tokens == dict.bos_index).int()
+    tok_tags = torch.cumsum(start_tag, dim=1) * mask_tag.int()
     return tok_tags
 
 @register_model("transformer")
@@ -1048,6 +1054,30 @@ def transformer_wmt_en_de_big_t2t(args):
     args.attention_dropout = getattr(args, "attention_dropout", 0.1)
     args.activation_dropout = getattr(args, "activation_dropout", 0.1)
     transformer_vaswani_wmt_en_de_big(args)
+
+@register_model_architecture("transformer", "transformer_doc_tiny")
+def transformer_doc_tiny(args):
+    args.encoder_embed_dim = getattr(args, "encoder_embed_dim", 256)
+    args.encoder_ffn_embed_dim = getattr(args, "encoder_ffn_embed_dim", 1024)
+    args.encoder_attention_heads = getattr(args, "encoder_attention_heads", 4)
+    args.encoder_layers = getattr(args, "encoder_layers", 6)
+    args.decoder_embed_dim = getattr(args, "decoder_embed_dim", 256)
+    args.decoder_ffn_embed_dim = getattr(args, "decoder_ffn_embed_dim", 1024)
+    args.decoder_attention_heads = getattr(args, "decoder_attention_heads", 4)
+    args.decoder_layers = getattr(args, "decoder_layers", 6)
+    base_architecture(args)
+
+@register_model_architecture("transformer", "transformer_doc_small")
+def transformer_doc_small(args):
+    args.encoder_embed_dim = getattr(args, "encoder_embed_dim", 512)
+    args.encoder_ffn_embed_dim = getattr(args, "encoder_ffn_embed_dim", 1024)
+    args.encoder_attention_heads = getattr(args, "encoder_attention_heads", 4)
+    args.encoder_layers = getattr(args, "encoder_layers", 6)
+    args.decoder_embed_dim = getattr(args, "decoder_embed_dim", 512)
+    args.decoder_ffn_embed_dim = getattr(args, "decoder_ffn_embed_dim", 1024)
+    args.decoder_attention_heads = getattr(args, "decoder_attention_heads", 4)
+    args.decoder_layers = getattr(args, "decoder_layers", 6)
+    base_architecture(args)
 
 @register_model_architecture("transformer", "transformer_doc_base")
 def transformer_doc_base(args):

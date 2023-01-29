@@ -146,6 +146,7 @@ def _main(args, output_file):
     # Test results
     res_sents = []
     res_docs = []
+    res_segs = []
 
     # Generate and compute BLEU score
     scorer = _new_scorer(args)
@@ -196,6 +197,8 @@ def _main(args, output_file):
                             generator.eos,
                         }
                     )
+                    # Guangsheng Bao: text output with <s> and </s>
+                    seg_target_str = '<s> ' + tgt_dict.string(target_tokens, extra_symbols_to_ignore={generator.eos})
 
             src_str = decode_fn(src_str)
             if has_target:
@@ -220,6 +223,9 @@ def _main(args, output_file):
                         generator.eos,
                     }
                 )
+                # Guangsheng Bao: text output with <s> and </s>
+                seg_hypo_str = '<s> ' + tgt_dict.string(hypo['tokens'].int().cpu(), extra_symbols_to_ignore={generator.eos})
+
                 detok_hypo_str = decode_fn(hypo_str)
                 if not args.quiet:
                     score = hypo['score'] / math.log(2)  # convert to base 2
@@ -257,8 +263,8 @@ def _main(args, output_file):
                             )
                             print('E-{}_{}\t{}'.format(sample_id, step, h_str), file=output_file)
 
-                # Score only the top hypothesis
-                if has_target and j == 0:
+                # Score nbest hypothesis
+                if has_target:
                     target_str_noseg = remove_seps(target_str)
                     detok_hypo_str_noseg = remove_seps(detok_hypo_str)
                     # Save test results
@@ -269,6 +275,7 @@ def _main(args, output_file):
                     target_str_noseg_doc = ' '.join(target_str_noseg)
                     detok_hypo_str_noseg_doc = ' '.join(detok_hypo_str_noseg)
                     res_docs.append((sample_id, target_str_noseg_doc, detok_hypo_str_noseg_doc))
+                    res_segs.append((sample_id, seg_target_str, seg_hypo_str))
 
                     if hasattr(scorer, 'add_string'):
                         if args.doc_mode == 'partial':
@@ -314,9 +321,13 @@ def _main(args, output_file):
                 logger.warning("BLEU score is being computed by splitting detokenized string on spaces, this is probably not what you want. Use --sacrebleu for standard 13a BLEU tokenization")
             else:
                 logger.warning("If you are using BPE on the target side, the BLEU score is computed on BPE tokens, not on proper words.  Use --sacrebleu for standard 13a BLEU tokenization")
+
         if args.doc_mode == 'partial':
             logger.info('[sentence-level] Generate {} with beam={}: {}'.format(args.gen_subset, args.beam, scorer.result_string()))
-        logger.info('[document-level] Generate {} with beam={}: {}'.format(args.gen_subset, args.beam, scorer_doc.result_string()))
+            logger.info('[document-level] Generate {} with beam={}: {}'.format(args.gen_subset, args.beam, scorer_doc.result_string()))
+        else:
+            logger.info('Generate {} with beam={}: {}'.format(args.gen_subset, args.beam, scorer_doc.result_string()))
+
         for i in range(num_bucket):
             logger.info(
                 'Bucket {}: {}'.format(_bucket_name(i), scorers[i].result_string() if scorers[i].samples > 0 else 'empty.'))
@@ -324,11 +335,14 @@ def _main(args, output_file):
     if len(args.gen_output) > 0:
         if args.doc_mode == 'partial':
             res_sents = sorted(res_sents, key=lambda x: x[0] * 10000 + x[1])
-            save_lines(args.gen_output + '.sent.ref.de', [t for _, _, t, h in res_sents])
-            save_lines(args.gen_output + '.sent.gen.de', [h for _, _, t, h in res_sents])
+            save_lines(args.gen_output + '.sent.ref', [t for _, _, t, h in res_sents])
+            save_lines(args.gen_output + '.sent.gen', [h for _, _, t, h in res_sents])
         res_docs = sorted(res_docs, key=lambda x: x[0])
-        save_lines(args.gen_output + '.doc.ref.de', [t for _, t, h in res_docs])
-        save_lines(args.gen_output + '.doc.gen.de', [h for _, t, h in res_docs])
+        save_lines(args.gen_output + '.doc.ref', [t for _, t, h in res_docs])
+        save_lines(args.gen_output + '.doc.gen', [h for _, t, h in res_docs])
+        res_segs = sorted(res_segs, key=lambda x: x[0])
+        save_lines(args.gen_output + '.seg.ref', [t for _, t, h in res_segs])
+        save_lines(args.gen_output + '.seg.gen', [h for _, t, h in res_segs])
     return scorer
 
 
