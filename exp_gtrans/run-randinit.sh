@@ -7,7 +7,7 @@
 # command help
 if [ $# == '0' ]; then
     echo "Please follow the usage:"
-    echo "    bash $0 iwslt17 train exp_test "
+    echo "    bash $0 iwslt17 train exp_test"
     echo "    bash $0 iwslt17 test exp_test"
     exit
 fi
@@ -35,7 +35,7 @@ if [ $mode == "train" ]; then
   doc_langs=$slang,$tlang
   python train.py $bin_path --save-dir $cp_path --tensorboard-logdir $cp_path --seed 555 --fp16 --num-workers 4 \
          --task translation_doc --source-lang $slang --target-lang $tlang --langs $doc_langs \
-         --arch transformer_doc_base --doc-mode partial --share-all-embeddings \
+         --arch gtransformer_base --doc-mode partial --share-all-embeddings \
          --optimizer adam --adam-betas "(0.9, 0.98)" --lr 5e-4 --lr-scheduler inverse_sqrt --warmup-updates 4000 \
          --criterion label_smoothed_cross_entropy --label-smoothing 0.1 --no-epoch-checkpoints \
          --max-tokens 4096 --update-freq 1 --validate-interval 1 --patience 10 \
@@ -48,8 +48,8 @@ elif [ $mode == "test" ]; then
   python -m fairseq_cli.generate $bin_path --path $cp_path/checkpoint_best.pt \
          --gen-subset test --batch-size 16 --beam 5 --max-len-a 1.2 --max-len-b 10 \
          --task translation_doc --source-lang $slang --target-lang $tlang --langs $doc_langs \
-          --doc-mode partial --tokenizer moses --remove-bpe --sacrebleu \
-         --gen-output $res_path/test.$data.$slang-$tlang > $run_path/test.$data.$slang-$tlang.log 2>&1
+         --doc-mode partial --tokenizer moses --remove-bpe --sacrebleu \
+         --gen-output $res_path/test > $run_path/test.$data.$slang-$tlang.log 2>&1
 else
   echo Unknown mode ${mode}.
 fi

@@ -3,10 +3,13 @@
 #
 # This source code is licensed under the MIT license found in the
 # LICENSE file in the root directory of this source tree.
-#
-# Usage:
-# e.g.
-# bash run-mbart.sh iwslt17 train exp_test
+
+# command help
+if [ $# == '0' ]; then
+    echo "Please follow the usage:"
+    echo "    bash $0 iwslt17 train exp_test"
+    exit
+fi
 
 data=$1
 mode=$2
@@ -48,7 +51,7 @@ elif [ $mode == "test" ]; then
          --gen-subset test --batch-size 32 --beam 5 --max-len-a 1.2 --max-len-b 10 \
          --task translation_doc --source-lang $slang --target-lang $tlang \
          --doc-mode partial --tokenizer moses --bpe 'sentencepiece' --sentencepiece-vocab $mbart_bpe --sacrebleu \
-         --langs $mbart_langs --gen-output $res_path/test.$data.$slang-$tlang > $run_path/test.$data.$slang-$tlang.log 2>&1
+         --langs $mbart_langs --gen-output $res_path/test > $run_path/test.$data.$slang-$tlang.log 2>&1
 else
   echo Unknown mode ${mode}.
 fi

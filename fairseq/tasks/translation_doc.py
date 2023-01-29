@@ -62,14 +62,14 @@ class DocTranslationTask(TranslationTask):
                             help='record attention entropy')
 
         parser.add_argument('--doc-noise-mask', default=0.0, type=float,
-                            help='fraction of tokens that will be masked.')
+                            help='alias word-dropout, denoting the ratio of tokens to mask out.')
         parser.add_argument('--doc-noise-epochs', default=0, type=int,
                             help='epochs for ramping up noise mask.')
         parser.add_argument('--doc-double-lr', action='store_true',
                             help='double learning rate, one for pretrained, one for randinit.')
 
         parser.add_argument('--load-partial', action='store_true',
-                            help='initialize part of the model with pretrained parameters.')
+                            help='initialize the model with pretrained parameters.')
         parser.add_argument('--load-partial-global-from-local', action='store_true',
                             help='initialize global attention from the parameters of local attention.')
         parser.add_argument('--lr-scale-pretrained', default=0.2, type=float,
