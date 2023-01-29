@@ -6,7 +6,8 @@
 
 **Package Requirements**: torch==1.4.0 tensorboardX numpy==1.19.0
 
-**Framework**: Our model and experiments are built upon [fairseq](https://github.com/pytorch/fairseq).
+**Framework**: Our model and experiments are built upon [fairseq](https://github.com/pytorch/fairseq). We use a [snapshot version]( https://drive.google.com/file/d/1UJmZn9LXPvOoifVKblt0RhUFsZRusOrt/view?usp=sharing ) between 0.9.0 and 1.10.0 as our initial code.
+
 
 Before running the scripts, please install fairseq dependencies by:
 ```
