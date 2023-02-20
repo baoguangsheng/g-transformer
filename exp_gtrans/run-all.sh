@@ -7,9 +7,9 @@
 # command help
 if [ $# == '0' ]; then
     echo "Please follow the usage:"
-    echo "    bash $0 run-randinit train exp_test partial"
-    echo "    bash $0 run-finetune train exp_test partial exp_sent"
-    echo "    bash $0 run-mbart train exp_test partial"
+    echo "    bash $0 run-randinit train exp_test"
+    echo "    bash $0 run-finetune train exp_test"
+    echo "    bash $0 run-mbart train exp_test"
     exit
 fi
 
